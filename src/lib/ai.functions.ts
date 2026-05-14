@@ -9,6 +9,18 @@ function getModel() {
   return createLovableAiGatewayProvider(key)(DEFAULT_MODEL);
 }
 
+export type MeetingSummary = {
+  keyPoints: string[];
+  decisions: string[];
+  actionItems: { task: string; owner: string; deadline: string }[];
+  deadlines: string[];
+};
+
+export type Schedule = {
+  blocks: { start: string; end: string; task: string; priority: "high" | "medium" | "low"; note: string }[];
+  tips: string[];
+};
+
 const emailSchema = z.object({
   audience: z.string().trim().min(1).max(200),
   tone: z.enum(["formal", "informal", "persuasive", "friendly", "apologetic"]),
@@ -41,10 +53,10 @@ export const summarizeMeeting = createServerFn({ method: "POST" })
         "You summarize meeting notes for busy professionals. Return STRICT JSON with this exact shape and nothing else: {\"keyPoints\":string[],\"decisions\":string[],\"actionItems\":{\"task\":string,\"owner\":string,\"deadline\":string}[],\"deadlines\":string[]}. Use empty arrays when something is missing. Never invent owners or deadlines — use 'Unassigned' or 'No deadline' if absent.",
       prompt: `Meeting notes:\n\n${data.notes}`,
     });
-    let parsed: unknown;
+    let parsed: MeetingSummary;
     try {
       const cleaned = text.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/i, "").trim();
-      parsed = JSON.parse(cleaned);
+      parsed = JSON.parse(cleaned) as MeetingSummary;
     } catch {
       parsed = { keyPoints: [text], decisions: [], actionItems: [], deadlines: [] };
     }
@@ -65,10 +77,10 @@ export const planSchedule = createServerFn({ method: "POST" })
         "You are an executive productivity coach. Given a list of tasks and the user's working hours, produce a prioritized daily schedule. Return STRICT JSON only: {\"blocks\":[{\"start\":\"HH:MM\",\"end\":\"HH:MM\",\"task\":string,\"priority\":\"high\"|\"medium\"|\"low\",\"note\":string}],\"tips\":string[]}. Include short breaks. Group similar deep work. Tips should be 3-5 actionable productivity suggestions.",
       prompt: `Working hours: ${data.hours}\nTasks:\n${data.tasks}`,
     });
-    let parsed: unknown;
+    let parsed: Schedule;
     try {
       const cleaned = text.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/i, "").trim();
-      parsed = JSON.parse(cleaned);
+      parsed = JSON.parse(cleaned) as Schedule;
     } catch {
       parsed = { blocks: [], tips: [text] };
     }
