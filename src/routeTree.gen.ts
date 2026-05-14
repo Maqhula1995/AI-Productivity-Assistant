@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteImport } from './routes/_layout.index'
+import { Route as LayoutSummarizeRouteImport } from './routes/_layout.summarize'
 import { Route as LayoutEmailRouteImport } from './routes/_layout.email'
 
 const LayoutRoute = LayoutRouteImport.update({
@@ -22,6 +23,11 @@ const LayoutIndexRoute = LayoutIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutSummarizeRoute = LayoutSummarizeRouteImport.update({
+  id: '/summarize',
+  path: '/summarize',
+  getParentRoute: () => LayoutRoute,
+} as any)
 const LayoutEmailRoute = LayoutEmailRouteImport.update({
   id: '/email',
   path: '/email',
@@ -31,23 +37,31 @@ const LayoutEmailRoute = LayoutEmailRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof LayoutIndexRoute
   '/email': typeof LayoutEmailRoute
+  '/summarize': typeof LayoutSummarizeRoute
 }
 export interface FileRoutesByTo {
   '/email': typeof LayoutEmailRoute
+  '/summarize': typeof LayoutSummarizeRoute
   '/': typeof LayoutIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_layout': typeof LayoutRouteWithChildren
   '/_layout/email': typeof LayoutEmailRoute
+  '/_layout/summarize': typeof LayoutSummarizeRoute
   '/_layout/': typeof LayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/email'
+  fullPaths: '/' | '/email' | '/summarize'
   fileRoutesByTo: FileRoutesByTo
-  to: '/email' | '/'
-  id: '__root__' | '/_layout' | '/_layout/email' | '/_layout/'
+  to: '/email' | '/summarize' | '/'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/_layout/email'
+    | '/_layout/summarize'
+    | '/_layout/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -70,6 +84,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutIndexRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/summarize': {
+      id: '/_layout/summarize'
+      path: '/summarize'
+      fullPath: '/summarize'
+      preLoaderRoute: typeof LayoutSummarizeRouteImport
+      parentRoute: typeof LayoutRoute
+    }
     '/_layout/email': {
       id: '/_layout/email'
       path: '/email'
@@ -82,11 +103,13 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteChildren {
   LayoutEmailRoute: typeof LayoutEmailRoute
+  LayoutSummarizeRoute: typeof LayoutSummarizeRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutEmailRoute: LayoutEmailRoute,
+  LayoutSummarizeRoute: LayoutSummarizeRoute,
   LayoutIndexRoute: LayoutIndexRoute,
 }
 
