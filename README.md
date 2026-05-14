@@ -165,39 +165,6 @@ Potential future enhancements include:
 
 ---
 
-# Installation
-
-## Clone Repository
-
-```bash
-git clone https://github.com/YOUR-USERNAME/AI-Productivity-Assistant.git
-```
-
----
-
-## Navigate to Project
-
-```bash
-cd AI-Productivity-Assistant
-```
-
----
-
-## Install Dependencies
-
-```bash
-npm install
-```
-
----
-
-## Run Development Server
-
-```bash
-npm run dev
-```
-
----
 
 # Deployment
 
@@ -214,8 +181,8 @@ The application can be deployed using:
 
 # View Live Project
 
-[Click here](https://your-project-link-here.com) to view the AI Productivity Assistant in action!
-https://cogno-boost-khuluwa-maqhula.lovable.app 
+https://cogno-boost-khuluwa-maqhula.lovable.app to view the AI Productivity Assistant in action!
+
 
 This project demonstrates practical AI implementation skills relevant to careers such as:
 - AI Prompt Engineer
@@ -226,12 +193,3 @@ This project demonstrates practical AI implementation skills relevant to careers
 
 ---
 
-# Author
-
-Developed by Khululwa Maqhula
-
----
-
-# License
-
-This project is for educational and demonstration purposes.
