@@ -14,6 +14,7 @@ import { Route as LayoutIndexRouteImport } from './routes/_layout.index'
 import { Route as LayoutSummarizeRouteImport } from './routes/_layout.summarize'
 import { Route as LayoutPlannerRouteImport } from './routes/_layout.planner'
 import { Route as LayoutEmailRouteImport } from './routes/_layout.email'
+import { Route as LayoutChatRouteImport } from './routes/_layout.chat'
 
 const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
@@ -39,14 +40,21 @@ const LayoutEmailRoute = LayoutEmailRouteImport.update({
   path: '/email',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutChatRoute = LayoutChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => LayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof LayoutIndexRoute
+  '/chat': typeof LayoutChatRoute
   '/email': typeof LayoutEmailRoute
   '/planner': typeof LayoutPlannerRoute
   '/summarize': typeof LayoutSummarizeRoute
 }
 export interface FileRoutesByTo {
+  '/chat': typeof LayoutChatRoute
   '/email': typeof LayoutEmailRoute
   '/planner': typeof LayoutPlannerRoute
   '/summarize': typeof LayoutSummarizeRoute
@@ -55,6 +63,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/chat': typeof LayoutChatRoute
   '/_layout/email': typeof LayoutEmailRoute
   '/_layout/planner': typeof LayoutPlannerRoute
   '/_layout/summarize': typeof LayoutSummarizeRoute
@@ -62,12 +71,13 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/email' | '/planner' | '/summarize'
+  fullPaths: '/' | '/chat' | '/email' | '/planner' | '/summarize'
   fileRoutesByTo: FileRoutesByTo
-  to: '/email' | '/planner' | '/summarize' | '/'
+  to: '/chat' | '/email' | '/planner' | '/summarize' | '/'
   id:
     | '__root__'
     | '/_layout'
+    | '/_layout/chat'
     | '/_layout/email'
     | '/_layout/planner'
     | '/_layout/summarize'
@@ -115,10 +125,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutEmailRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/chat': {
+      id: '/_layout/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof LayoutChatRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
 interface LayoutRouteChildren {
+  LayoutChatRoute: typeof LayoutChatRoute
   LayoutEmailRoute: typeof LayoutEmailRoute
   LayoutPlannerRoute: typeof LayoutPlannerRoute
   LayoutSummarizeRoute: typeof LayoutSummarizeRoute
@@ -126,6 +144,7 @@ interface LayoutRouteChildren {
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutChatRoute: LayoutChatRoute,
   LayoutEmailRoute: LayoutEmailRoute,
   LayoutPlannerRoute: LayoutPlannerRoute,
   LayoutSummarizeRoute: LayoutSummarizeRoute,
