@@ -3,7 +3,7 @@ import { Mail, FileText, CalendarClock, MessageSquare, ArrowRight, Sparkles } fr
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-export const Route = createFileRoute("/_layout/")({
+export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Dashboard — AI Productivity Assistant" },
