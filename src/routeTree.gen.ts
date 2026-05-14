@@ -9,50 +9,172 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as LayoutRouteImport } from './routes/_layout'
+import { Route as LayoutIndexRouteImport } from './routes/_layout.index'
+import { Route as LayoutSummarizeRouteImport } from './routes/_layout.summarize'
+import { Route as LayoutPlannerRouteImport } from './routes/_layout.planner'
+import { Route as LayoutEmailRouteImport } from './routes/_layout.email'
+import { Route as LayoutChatRouteImport } from './routes/_layout.chat'
+import { Route as LayoutAboutRouteImport } from './routes/_layout.about'
 
-const IndexRoute = IndexRouteImport.update({
+const LayoutRoute = LayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutIndexRoute = LayoutIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutSummarizeRoute = LayoutSummarizeRouteImport.update({
+  id: '/summarize',
+  path: '/summarize',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutPlannerRoute = LayoutPlannerRouteImport.update({
+  id: '/planner',
+  path: '/planner',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutEmailRoute = LayoutEmailRouteImport.update({
+  id: '/email',
+  path: '/email',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutChatRoute = LayoutChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutAboutRoute = LayoutAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof LayoutIndexRoute
+  '/about': typeof LayoutAboutRoute
+  '/chat': typeof LayoutChatRoute
+  '/email': typeof LayoutEmailRoute
+  '/planner': typeof LayoutPlannerRoute
+  '/summarize': typeof LayoutSummarizeRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/about': typeof LayoutAboutRoute
+  '/chat': typeof LayoutChatRoute
+  '/email': typeof LayoutEmailRoute
+  '/planner': typeof LayoutPlannerRoute
+  '/summarize': typeof LayoutSummarizeRoute
+  '/': typeof LayoutIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/about': typeof LayoutAboutRoute
+  '/_layout/chat': typeof LayoutChatRoute
+  '/_layout/email': typeof LayoutEmailRoute
+  '/_layout/planner': typeof LayoutPlannerRoute
+  '/_layout/summarize': typeof LayoutSummarizeRoute
+  '/_layout/': typeof LayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/about' | '/chat' | '/email' | '/planner' | '/summarize'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/about' | '/chat' | '/email' | '/planner' | '/summarize' | '/'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/_layout/about'
+    | '/_layout/chat'
+    | '/_layout/email'
+    | '/_layout/planner'
+    | '/_layout/summarize'
+    | '/_layout/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  LayoutRoute: typeof LayoutRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_layout/': {
+      id: '/_layout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof LayoutIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/summarize': {
+      id: '/_layout/summarize'
+      path: '/summarize'
+      fullPath: '/summarize'
+      preLoaderRoute: typeof LayoutSummarizeRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/planner': {
+      id: '/_layout/planner'
+      path: '/planner'
+      fullPath: '/planner'
+      preLoaderRoute: typeof LayoutPlannerRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/email': {
+      id: '/_layout/email'
+      path: '/email'
+      fullPath: '/email'
+      preLoaderRoute: typeof LayoutEmailRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/chat': {
+      id: '/_layout/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof LayoutChatRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/about': {
+      id: '/_layout/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof LayoutAboutRouteImport
+      parentRoute: typeof LayoutRoute
     }
   }
 }
 
+interface LayoutRouteChildren {
+  LayoutAboutRoute: typeof LayoutAboutRoute
+  LayoutChatRoute: typeof LayoutChatRoute
+  LayoutEmailRoute: typeof LayoutEmailRoute
+  LayoutPlannerRoute: typeof LayoutPlannerRoute
+  LayoutSummarizeRoute: typeof LayoutSummarizeRoute
+  LayoutIndexRoute: typeof LayoutIndexRoute
+}
+
+const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutAboutRoute: LayoutAboutRoute,
+  LayoutChatRoute: LayoutChatRoute,
+  LayoutEmailRoute: LayoutEmailRoute,
+  LayoutPlannerRoute: LayoutPlannerRoute,
+  LayoutSummarizeRoute: LayoutSummarizeRoute,
+  LayoutIndexRoute: LayoutIndexRoute,
+}
+
+const LayoutRouteWithChildren =
+  LayoutRoute._addFileChildren(LayoutRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  LayoutRoute: LayoutRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
