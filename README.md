@@ -210,6 +210,13 @@ The application can be deployed using:
 
 # Industry Relevance
 
+---
+
+# View Live Project
+
+[Click here](https://your-project-link-here.com) to view the AI Productivity Assistant in action!
+https://cogno-boost-khuluwa-maqhula.lovable.app 
+
 This project demonstrates practical AI implementation skills relevant to careers such as:
 - AI Prompt Engineer
 - Digital Transformation Analyst
